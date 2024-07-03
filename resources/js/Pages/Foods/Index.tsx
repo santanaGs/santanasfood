@@ -47,7 +47,7 @@ const Index = () => {
 					{ label: 'Categoria', name: 'category_name' },
 				]}
 				rows={foods?.data}
-				getRowDetailsUrl={row => route('categories.edit', row.id)}
+				getRowDetailsUrl={row => route('foods.edit', row.id)}
 			/>
 			<Pagination links={foods?.links} />
 		</div>

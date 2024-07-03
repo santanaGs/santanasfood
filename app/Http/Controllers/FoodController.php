@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FoodStoreRequest;
+use App\Http\Requests\FoodUpdateRequest;
 use App\Models\Category;
 use App\Models\Food;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,7 @@ class FoodController extends Controller
                     'id' => $food->id,
                     'name' => $food->name,
                     'description' => $food->description,
-                    'price' => $food->price,
+                    'price' => 'R$ ' . number_format($food->price, 2, ',', '.'),
                     'category_name' => $food->categoryFood ? $food->categoryFood->name : null,
                     'image' => $food->image ? $food->image : '',
                 ];
@@ -96,24 +97,43 @@ class FoodController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Food $food)
     {
-        //
+        $categories = Category::all();
+        return Inertia::render('Foods/Edit', [
+            'food' => $food,
+            'categories' => $categories,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FoodUpdateRequest $request, Food $food): RedirectResponse
     {
         //
+
+        $food->update(
+            $request->validated()
+        );
+
+        return Redirect::back()->with('success', 'Lanche atualizada com sucesso.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Food $food): RedirectResponse
     {
-        //
+        $food->delete();
+
+        return Redirect::back()->with('success', 'Lanche deletada.');
+    }
+
+    public function restore(Food $food): RedirectResponse
+    {
+        $food->restore();
+
+        return Redirect::back()->with('success', 'Lanche restaurada.');
     }
 }

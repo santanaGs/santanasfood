@@ -186,3 +186,19 @@ Route::get('foods/create', [FoodController::class, 'create'])
 Route::post('foods', [FoodController::class, 'store'])
     ->name('foods.store')
     ->middleware('auth');
+
+Route::get('foods/{food}/edit', [FoodController::class, 'edit'])
+    ->name('foods.edit')
+    ->middleware('auth');
+
+Route::put('foods/{food}', [FoodController::class, 'update'])
+    ->name('foods.update')
+    ->middleware('auth');
+
+Route::delete('foods/{food}', [FoodController::class, 'destroy'])
+    ->name('foods.destroy')
+    ->middleware('auth');
+
+Route::put('foods/{food}/restore', [FoodController::class, 'restore'])
+    ->name('foods.restore')
+    ->middleware('auth');
